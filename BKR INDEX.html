@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BKR Logistics & Transport</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #FFFFFF;
+      color: #1F2937;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: #FFFFFF;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2rem;
+      color: #DC2626;
+      margin-bottom: 1rem;
+    }
+    h2 {
+      font-size: 1.5rem;
+      color: #1F2937;
+      margin-bottom: 1rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+      border: 1px solid #1F2937;
+      border-radius: 4px;
+    }
+    button {
+      background: #DC2626;
+      color: #FFFFFF;
+      padding: 0.75rem;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+    button:hover {
+      background: #B91C1C;
+    }
+    .social-btn {
+      background: #1F2937;
+    }
+    .social-btn:hover {
+      background: #111827;
+    }
+    a {
+      color: #DC2626;
+      font-size: 1rem;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .fa-truck {
+      font-size: 2rem;
+      color: #DC2626;
+      margin-bottom: 0.5rem;
+    }
+    .card {
+      background: #F3F4F6;
+      padding: 1rem;
+      margin: 0.5rem 0;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .card:hover {
+      background: #E5E7EB;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    th, td {
+      border: 1px solid #1F2937;
+      padding: 0.5rem;
+      text-align: left;
+      font-size: 1rem;
+    }
+    .chatbot {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #DC2626;
+      color: #FFFFFF;
+      padding: 1rem;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .chatbot:hover {
+      background: #B91C1C;
+    }
+    .chat-window {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background: #FFFFFF;
+      border: 1px solid #1F2937;
+      padding: 1rem;
+      border-radius: 8px;
+      width: 300px;
+      display: none;
+    }
+    .chat-window input {
+      width: 80%;
+      display: inline-block;
+    }
+    .chat-window button {
+      width: 18%;
+      padding: 0.5rem;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Screen -->
+  <div id="login-screen" class="container">
+    <i class="fa-solid fa-truck"></i>
+    <h1>BKR Logistics & Transport</h1>
+    <input type="email" id="email" placeholder="Email (e.g., njabulo@bkr.com)" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button onclick="login()">Login</button>
+    <button class="social-btn" onclick="googleLogin()"><i class="fa-brands fa-google"></i> Sign in with Google</button>
+    <button class="social-btn" onclick="appleLogin()"><i class="fa-brands fa-apple"></i> Sign in with iCloud</button>
+    <p><a href="#" onclick="forgotPassword()">Forgot Password?</a></p>
+    <p><a href="#" onclick="showSignup()">Create New Account</a></p>
+  </div>
+
+  <!-- Signup Screen -->
+  <div id="signup-screen" class="container hidden">
+    <i class="fa-solid fa-truck"></i>
+    <h1>BKR Logistics & Transport</h1>
+    <input type="text" id="signup-name" placeholder="Full Name" required>
+    <input type="email" id="signup-email" placeholder="Email" required>
+    <input type="password" id="signup-password" placeholder="Password" required>
+    <button onclick="signup()">Sign Up</button>
+    <button class="social-btn" onclick="googleLogin()"><i class="fa-brands fa-google"></i> Sign up with Google</button>
+    <button class="social-btn" onclick="appleLogin()"><i class="fa-brands fa-apple"></i> Sign up with iCloud</button>
+    <p><a href="#" onclick="showLogin()">Back to Login</a></p>
+  </div>
+
+  <!-- Customer Dashboard -->
+  <div id="customer-dashboard" class="container hidden">
+    <i class="fa-solid fa-truck"></i>
+    <h1>Welcome, Aggrey Madolo!</h1>
+    <p>Active Orders: 2 | Saved Quotes: 1</p>
+    <div class="card" onclick="showQuotation()"><i class="fa-solid fa-calculator"></i> Get a Quote</div>
+    <div class="card" onclick="showCart()"><i class="fa-solid fa-cart-shopping"></i> Shopping Cart</div>
+    <div class="card" onclick="showOrders()"><i class="fa-solid fa-box"></i> My Orders</div>
+    <div class="card" onclick="showContact()"><i class="fa-solid fa-phone"></i> Contact Support</div>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <!-- Admin Dashboard -->
+  <div id="admin-dashboard" class="container hidden">
+    <i class="fa-solid fa-truck"></i>
+    <h1>Welcome, Fanuzile Makhubela!</h1>
+    <p>Total Orders: 10 | Pending Quotes: 3</p>
+    <div class="card" onclick="showOrders()"><i class="fa-solid fa-box"></i> Manage Orders</div>
+    <div class="card" onclick="showCustomers()"><i class="fa-solid fa-users"></i> Manage Customers</div>
+    <div class="card" onclick="showServices()"><i class="fa-solid fa-tools"></i> Manage Services</div>
+    <div class="card" onclick="showReports()"><i class="fa-solid fa-chart-line"></i> Reports</div>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <!-- About Screen -->
+  <div id="about-screen" class="container hidden">
+    <i class="fa-solid fa-truck"></i>
+    <h1>About BKR Logistics</h1>
+    <p>Founded in 2021 by Fanuzile Makhubela, BKR Logistics & Transport started with one truck to serve the Nkomazi region. We’ve delivered countless loads of sand and soil, supporting builders and homeowners with reliable, affordable service.</p>
+    <p><strong>Mission:</strong> To deliver high-quality materials with efficiency and care, empowering Nkomazi’s construction projects.</p>
+    <p><strong>Testimonials:</strong></p>
+    <p><em>“BKR’s River Sand is top-notch, delivered in 24 hours!”</em> – Nkosenhle</p>
+    <p><em>“Affordable G5 Soil and great service!”</em> – Hlumisa</p>
+    <button onclick="backToDashboard()">Back</button>
+  </div>
+
+  <!-- Quotation Calculator -->
+  <div id="quotation-screen" class="container hidden">
+    <i class="fa-solid fa-truck"></i>
+    <h1>Quotation Calculator</h1>
+    <select id="material">
+      <option value="river-sand">River Sand (R1500)</option>
+      <option value="plaster-sand">Plaster Sand (R1500)</option>
+      <option value="g5-soil">G5 Soil (R1100)</option>
+    </select>
+    <input type="number" id="quantity" placeholder="Quantity (loads)" min="1" required>
+    <button onclick="calculateQuote()">Calculate Quote</button>
+    <p id="quote-result"></p>
+    <button onclick="addToCart()">Add to Cart</button>
+    <button onclick="backToDashboard()">Back</button>
+  </div>
+
+  <!-- Shopping Cart -->
+  <div id="cart-screen" class="container hidden">
+    <i class="fa-solid fa-truck"></i>
+    <h1>Shopping Cart</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Material</th>
+          <th>Quantity</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody id="cart-items">
+        <tr>
+          <td>River Sand</td>
+          <td>1</td>
+          <td>R1500</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Total: <span id="cart-total">R1500</span></p>
+    <select id="payment-method">
+      <option value="cash">Cash</option>
+      <option value="eft">EFT</option>
+      <option value="mastercard">Mastercard</option>
+    </select>
+    <button onclick="checkout()">Proceed to Checkout</button>
+    <button onclick="backToDashboard()">Back</button>
+  </div>
+
+  <!-- Order Management (Customer) -->
+  <div id="orders-screen" class="container hidden">
+    <i class="fa-solid fa-truck"></i>
+    <h1>My Orders</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Material</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="customer-orders">
+        <tr>
+          <td>BKR001</td>
+          <td>G5 Soil</td>
+          <td id="status-BKR001">In Transit</td>
+        </tr>
+        <tr>
+          <td>BKR002</td>
+          <td>Plaster Sand</td>
+          <td id="status-BKR002">Delivered</td>
+        </tr>
+      </tbody>
+    </table>
+    <button onclick="backToDashboard()">Back</button>
+  </div>
+
+  <!-- Order Management (Admin) -->
+  <div id="admin-orders-screen" class="container hidden">
+    <i class="fa-solid fa-truck"></i>
+    <h1>Manage Orders</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Material</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>BKR001</td>
+          <td>G5 Soil</td>
+          <td>
+            <select id="status-select-BKR001" onchange="updateStatus('BKR001')">
+              <option value="Pending">Pending</option>
+              <option value="In Transit" selected>In Transit</option>
+              <option value="Delivered">Delivered</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>BKR002</td>
+          <td>Plaster Sand</td>
+          <td>
+            <select id="status-select-BKR002" onchange="updateStatus('BKR002')">
+              <option value="Pending">Pending</option>
+              <option value="In Transit">In Transit</option>
+              <option value="Delivered" selected>Delivered</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button onclick="backToDashboard()">Back</button>
+  </div>
+
+  <!-- Contact Screen -->
+  <div id="contact-screen" class="container hidden">
+    <i class="fa-solid fa-truck"></i>
+    <h1>Contact Support</h1>
+    <p><i class="fa-brands fa-whatsapp"></i> WhatsApp: <a href="https://wa.me/27714108072">0714108072</a></p>
+    <p><i class="fa-brands fa-facebook"></i> Facebook: <a href="#">Njabulo Feliz Rodillas</a></p>
+    <p><i class="fa-brands fa-instagram"></i> Instagram: <a href="#">Mchayiina</a></p>
+    <p><i class="fa-solid fa-envelope"></i> Email: njabulo@bkr.com</p>
+    <p><i class="fa-solid fa-map-marker-alt"></i> Mangweni 496, Kwalugedlane, Malelane, 1341</p>
+    <button onclick="backToDashboard()">Back</button>
+  </div>
+
+  <!-- Customers Management (Admin) -->
+  <div id="customers-screen" class="container hidden">
+    <i class="fa-solid fa-truck"></i>
+    <h1>Manage Customers</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Aggrey Madolo</td>
+          <td>njabulo@bkr.com</td>
+          <td>(071) 410 8072</td>
+        </tr>
+      </tbody>
+    </table>
+    <button onclick="backToDashboard()">Back</button>
+  </div>
+
+  <!-- Services Management (Admin) -->
+  <div id="services-screen" class="container hidden">
+    <i class="fa-solid fa-truck"></i>
+    <h1>Manage Services</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Material</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>River Sand</td>
+          <td>R1500</td>
+        </tr>
+        <tr>
+          <td>Plaster Sand</td>
+          <td>R1500</td>
+        </tr>
+        <tr>
+          <td>G5 Soil</td>
+          <td>R1100</td>
+        </tr>
+      </tbody>
+    </table>
+    <button onclick="backToDashboard()">Back</button>
+  </div>
+
+  <!-- Reports (Admin) -->
+  <div id="reports-screen" class="container hidden">
+    <i class="fa-solid fa-truck"></i>
+    <h1>Reports</h1>
+    <p>Total Orders: 10</p>
+    <p>Total Revenue: R14,500</p>
+    <p>Popular Material: River Sand</p>
+    <button onclick="backToDashboard()">Back</button>
+  </div>
+
+  <!-- Chatbot -->
+  <div class="chatbot" onclick="toggleChat()"><i class="fa-solid fa-comment"></i></div>
+  <div id="chat-window" class="chat-window">
+    <p>Hello! I’m Hlumzin, your BKR assistant. Ask me anything!</p>
+    <p id="chat-response"></p>
+    <input type="text" id="chat-input" placeholder="Type your question...">
+    <button onclick="sendChat()">Send</button>
+  </div>
+
+  <script>
+    let currentUser = null;
+    let orders = [
+      { id: 'BKR001', material: 'G5 Soil', status: 'In Transit' },
+      { id: 'BKR002', material: 'Plaster Sand', status: 'Delivered' }
+    ];
+
+    function showScreen(screenId) {
+      document.querySelectorAll('.container').forEach(screen => screen.classList.add('hidden'));
+      document.getElementById(screenId).classList.remove('hidden');
+    }
+
+    function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      if (email === 'njabulo@bkr.com' && password === 'njabulo@bkr') {
+        currentUser = 'customer';
+        showScreen('customer-dashboard');
+      } else if (email === 'fanuz@bkr.com' && password === 'fanuz@bkr') {
+        currentUser = 'admin';
+        showScreen('admin-dashboard');
+      } else {
+        alert('Invalid credentials. Please try again.');
+      }
+    }
+
+    function googleLogin() {
+      alert('Redirecting to Google Sign-In...');
+    }
+
+    function appleLogin() {
+      alert('Redirecting to iCloud Sign-In...');
+    }
+
+    function forgotPassword() {
+      const email = document.getElementById('email').value;
+      if (email) {
+        alert(`Password reset link sent to ${email}`);
+      } else {
+        alert('Please enter your email.');
+      }
+    }
+
+    function showSignup() {
+      showScreen('signup-screen');
+    }
+
+    function signup() {
+      const name = document.getElementById('signup-name').value;
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+      if (name && email && password) {
+        alert(`Account created for ${name}! Please log in.`);
+        showScreen('login-screen');
+      } else {
+        alert('Please fill all fields.');
+      }
+    }
+
+    function showLogin() {
+      showScreen('login-screen');
+    }
+
+    function logout() {
+      currentUser = null;
+      showScreen('login-screen');
+    }
+
+    function showQuotation() {
+      showScreen('quotation-screen');
+    }
+
+    function showCart() {
+      showScreen('cart-screen');
+    }
+
+    function showOrders() {
+      showScreen(currentUser === 'admin' ? 'admin-orders-screen' : 'orders-screen');
+    }
+
+    function showContact() {
+      showScreen('contact-screen');
+    }
+
+    function showCustomers() {
+      showScreen('customers-screen');
+    }
+
+    function showServices() {
+      showScreen('services-screen');
+    }
+
+    function showReports() {
+      showScreen('reports-screen');
+    }
+
+    function showAbout() {
+      showScreen('about-screen');
+    }
+
+    function backToDashboard() {
+      showScreen(currentUser === 'customer' ? 'customer-dashboard' : 'admin-dashboard');
+    }
+
+    function calculateQuote() {
+      const material = document.getElementById('material').value;
+      const quantity = parseInt(document.getElementById('quantity').value);
+      const basePrice = material === 'g5-soil' ? 1100 : 1500;
+      const total = basePrice * quantity;
+      document.getElementById('quote-result').innerText = `Quote: R${total} (R${basePrice} x ${quantity}, free delivery in Nkomazi)`;
+    }
+
+    function addToCart() {
+      alert('Added to cart!');
+      showScreen('cart-screen');
+    }
+
+    function checkout() {
+      const paymentMethod = document.getElementById('payment-method').value;
+      alert(`Processing payment via ${paymentMethod}...`);
+    }
+
+    function updateStatus(orderId) {
+      const select = document.getElementById(`status-select-${orderId}`);
+      const newStatus = select.value;
+      orders = orders.map(order => order.id === orderId ? { ...order, status: newStatus } : order);
+      document.getElementById(`status-${orderId}`).innerText = newStatus;
+      alert(`Order ${orderId} status updated to ${newStatus}`);
+    }
+
+    function toggleChat() {
+      const chatWindow = document.getElementById('chat-window');
+      chatWindow.style.display = chatWindow.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function sendChat() {
+      const input = document.getElementById('chat-input').value.toLowerCase();
+      const response = document.getElementById('chat-response');
+      if (input.includes('price') || input.includes('cost')) {
+        response.innerText = 'River Sand: R1500, Plaster Sand: R1500, G5 Soil: R1100 per load.';
+      } else if (input.includes('delivery')) {
+        response.innerText = 'Free delivery in Nkomazi, typically 24–48 hours.';
+      } else if (input.includes('track') || input.includes('order')) {
+        response.innerText = 'Log in to view your order status.';
+      } else if (input.includes('pay') || input.includes('payment')) {
+        response.innerText = 'We accept Cash, EFT, and Mastercard.';
+      } else if (input.includes('help') || input.includes('support')) {
+        response.innerText = 'Chat with us on WhatsApp: https://wa.me/27714108072';
+      } else {
+        response.innerText = 'Sorry, I didn’t understand. Try asking about prices, delivery, or support!';
+      }
+      document.getElementById('chat-input').value = '';
+    }
+  </script>
+</body>
+</html>
